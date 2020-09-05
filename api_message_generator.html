@@ -17,7 +17,7 @@
 ${description}
 \`\`\`
 `
-        result.style = `height: ${16 + parseInt(document.getElementById("server_description").style.height.replace(/(.*)px/, '$1'))}px`
+        result.style = `height: ${16 + result.value.lastIndexOf('\n') * 1 + parseInt(document.getElementById("server_description").style.height.replace(/(.*)px/, '$1'))}px`
       }
     </script>
   </head>
