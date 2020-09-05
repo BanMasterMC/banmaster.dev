@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>API申請メッセージ生成</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script type="text/javascript">
+      function generate() {
+        const url = document.getElementById("server_url").value
+        const description = document.getElementById("server_description").value
+        const result = document.getElementById("result")
+        result.value = `サーバーのURL: ${url}
+サーバーの情報:
+\`\`\`text
+${description}
+\`\`\`
+`
+        result.style = `height: ${8 + document.getElementById("server_description").style.height}`
+      }
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <form class="col s12">
+        <div class="row">
+          <div class="input-field col s6">
+            <input id="server_url" type="text" class="validate" pattern="https://banmaster.pro/server.*" required />
+            <label for="server_url">BanMasterサイト上のサーバーURL</label>
+          </div>
+          <div class="input-field col s12">
+            <textarea id="server_description" placeholder="ほかの人が見ただけでサーバーを簡単に把握できるような情報を書いてください。" class="materialize-textarea"></textarea>
+            <label for="server_description">サーバーの情報</label>
+          </div>
+          <div class="col s12">
+            <a class="waves-effect waves-light btn" onclick="generate()">生成</a>
+          </div>
+          <div class="input-field col s12">
+            <textarea id="result" class="materialize-textarea"></textarea>
+            <label for="result">生成されたメッセージ</label>
+          </div>
+        </div>
+      </form>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  </body>
+</html>
