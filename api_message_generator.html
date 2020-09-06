@@ -7,22 +7,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script type="text/javascript">
+      let url = true
       function generate() {
         const url = document.getElementById("server_url").value
+        const name = document.getElementById("server_name").value
+        const address = document.getElementById("server_address").value
         const description = document.getElementById("server_description").value
         const result = document.getElementById("result")
-        result.value = `サーバーのURL: ${url}
+        if (url) {
+          result.value = `サーバーのURL: ${url}
 サーバーの情報:
 \`\`\`text
 ${description}
 \`\`\`
 `
-        result.style = `height: ${16 + result.value.lastIndexOf('\n') * 1 + parseInt(document.getElementById("server_description").style.height.replace(/(.*)px/, '$1'))}px`
+        } else {
+          result.value = `サーバー名: ${name}
+サーバーアドレス: ${address}
+サーバーの情報:
+\`\`\`text
+${description}
+\`\`\`
+`
+        }
+        result.style = `height: ${30 + result.value.lastIndexOf('\n') * 1 + parseInt(document.getElementById("server_description").style.height.replace(/(.*)px/, '$1'))}px`
       }
       function updateClipboard() {
         const result = document.getElementById("result")
         document.querySelector('#result').select()
         navigator.clipboard.writeText(result.value)
+      }
+      function select(isUrl) {
+        url = isUrl
+        if (isUrl) {
+          document.getElementById("urlField").style.display = ''
+          document.getElementById("serverInfoField").style.display = 'none'
+        } else {
+          document.getElementById("urlField").style.display = 'none'
+          document.getElementById("serverInfoField").style.display = ''
+        }
       }
     </script>
   </head>
@@ -30,9 +53,33 @@ ${description}
     <div class="container">
       <div class="col s12">
         <div class="row">
-          <div class="input-field col s6">
-            <input id="server_url" type="text" class="validate" pattern="https://banmaster.pro/server.*" required />
-            <label for="server_url">BanMasterサイト上のサーバーURL</label>
+          <p onclick="select(true)">
+            <label>
+              <input class="with-gap" name="type" type="radio" checked />
+              <span>サーバーURL</span>
+            </label>
+          </p>
+          <p onclick="select(false)">
+            <label>
+              <input class="with-gap" name="type" type="radio" />
+              <span>サーバー名/アドレス</span>
+            </label>
+          </p>
+          <div class="section" id="urlField">
+            <div class="input-field col s6">
+              <input id="server_url" type="text" class="validate" pattern="https://banmaster.pro/server.*" required />
+              <label for="server_url">BanMasterサイト上のサーバーURL</label>
+            </div>
+          </div>
+          <div class="section" id="serverInfoField">
+            <div class="input-field col s6">
+              <input id="server_name" type="text" class="validate" required />
+              <label for="server_name">サーバー名</label>
+            </div>
+            <div class="input-field col s6">
+              <input id="server_address" type="text" class="validate" required />
+              <label for="server_address">サーバーアドレス</label>
+            </div>
           </div>
           <div class="input-field col s12">
             <textarea id="server_description" placeholder="ほかの人が見ただけでサーバーを簡単に把握できるような情報を書いてください。" class="materialize-textarea"></textarea>
@@ -48,6 +95,9 @@ ${description}
         </div>
       </div>
     </div>
+    <script type="text/javascript">
+      select(true)
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   </body>
 </html>
