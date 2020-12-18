@@ -11,6 +11,7 @@
     <div class="container" style="margin-top: 50px">
       <div class="col s12">
         <div class="row">
+          <p><a href="https://mcleaks.net/get">Get Alt Token from here!</a></p>
           <div class="input-field col s6">
             <input id="token" type="text" class="validate" required />
             <label for="token">Alt Token</label>
@@ -48,21 +49,6 @@
         const headers = new Headers()
         headers.append('Content-Type', 'application/json')
         const body = { 'token': token }
-        /*
-        const req = new XMLHttpRequest()
-        req.addEventListener('load', () => {
-          const data = JSON.parse(req.responseText)
-          if (data.success) {
-            status.value = 'Request success, minecraft id below'
-            result.value = data.result.mcname
-            session.value = data.result.session
-          } else {
-            status.value = 'Error: ' + data.errorMessage
-          }
-        })
-        req.open('POST', 'https://cors-anywhere.herokuapp.com/https://auth.mcleaks.net/v1/redeem')
-        req.send(JSON.stringify(body))
-        */
         fetch('https://cors-anywhere.herokuapp.com/https://auth.mcleaks.net/v1/redeem', { headers, body: JSON.stringify(body), method: 'POST', mode: 'cors' }).then(res => {
           console.log(res)
           return res.json()
