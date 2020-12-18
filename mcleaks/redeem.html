@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MCLeaks Token Redeemer (ID Fetcher)</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container" style="margin-top: 50px">
+      <div class="col s12">
+        <div class="row">
+          <div class="input-field col s6">
+            <input id="token" type="text" class="validate" required />
+            <label for="token">Alt Token</label>
+          </div>
+          <div class="col s12">
+            <a class="waves-effect waves-light btn" onclick="request()">Request</a>
+          </div>
+          <div class="input-field col s12">
+            <input id="status" type="text" readonly></input>
+            <label for="status">Request Status</label>
+          </div>
+          <div class="input-field col s12">
+            <input id="result" type="text" readonly></input>
+            <label for="result">Minecraft ID</label>
+          </div>
+          <div class="input-field col s12">
+            <input id="session" type="text" readonly></input>
+            <label for="session">Session ID</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript">
+      const status = document.getElementById('status')
+      const session = document.getElementById('session')
+      const result = document.getElementById('result')
+      status.value = 'Waiting for request'
+      result.value = '<Empty>'
+      session.value = '<Empty>'
+      function request() {
+        status.value = 'Redeeming token...'
+        result.value = '<Empty>'
+        session.value = '<Empty>'
+        const token = document.getElementById('token').value
+        const headers = new Headers()
+        headers.append('Content-Type', 'application/json')
+        const body = { 'token': token }
+        /*
+        const req = new XMLHttpRequest()
+        req.addEventListener('load', () => {
+          const data = JSON.parse(req.responseText)
+          if (data.success) {
+            status.value = 'Request success, minecraft id below'
+            result.value = data.result.mcname
+            session.value = data.result.session
+          } else {
+            status.value = 'Error: ' + data.errorMessage
+          }
+        })
+        req.open('POST', 'https://cors-anywhere.herokuapp.com/https://auth.mcleaks.net/v1/redeem')
+        req.send(JSON.stringify(body))
+        */
+        fetch('https://cors-anywhere.herokuapp.com/https://auth.mcleaks.net/v1/redeem', { headers, body: JSON.stringify(body), method: 'POST', mode: 'cors' }).then(res => {
+          console.log(res)
+          return res.json()
+        }).then(data => {
+          if (data.success) {
+            status.value = 'Request success, Minecraft ID and Session ID below'
+            result.value = data.result.mcname
+            session.value = data.result.session
+          } else {
+            status.value = 'Error: ' + data.errorMessage
+          }
+        })
+      }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  </body>
+</html>
